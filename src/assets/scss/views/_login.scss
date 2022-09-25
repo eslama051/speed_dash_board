@@ -1,0 +1,34 @@
+.login_view {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  .login_form {
+    align-self: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 0.5rem;
+    .input {
+      .v-input__slot {
+        border: 1px solid;
+        // position: relative
+        &::after,
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+  .login_img {
+    width: 50%;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+  }
+}
