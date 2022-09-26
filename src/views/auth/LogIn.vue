@@ -1,6 +1,6 @@
 <template>
   <section class="login_view">
-    <v-form class="login_form">
+    <v-form class="login_form" @submit.prevent="submitForm">
       <div class="login_logo">
         <img src="../../assets/media/logo/logo.svg" alt="" />
       </div>
@@ -17,7 +17,7 @@
 
       <base-button>تسجيل الدخول</base-button>
     </v-form>
-    <div class="login_img">
+    <div class="login_img d-none d-md-block">
       <img src="../../assets/media/login/login_img.jpg" alt="" />
     </div>
   </section>
@@ -29,6 +29,11 @@ export default {
     return {
       showPassword: false,
     };
+  },
+  methods: {
+    submitForm() {
+      this.$router.push("/");
+    },
   },
 };
 </script>

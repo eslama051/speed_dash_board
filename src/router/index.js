@@ -1,13 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+//start ::app views
+import AppWrapper from "../views/app/AppWrapper.vue";
+//end ::app views
+
 // login
 import LogIn from "../views/auth/LogIn.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
-  { path: "/", component: null },
+  { path: "/", component: AppWrapper },
   { path: "/login", component: LogIn },
 ];
 

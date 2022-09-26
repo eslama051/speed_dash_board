@@ -10,6 +10,11 @@ Vue.config.productionTip = false;
 import "./assets/scss/main.scss";
 //end :: import main.scss
 
+// START:: IMPORTING FONT AWESOME
+import "@fortawesome/fontawesome-free/css/all.css";
+import "@fortawesome/fontawesome-free/js/all.js";
+// END:: IMPORTING FONT AWESOME
+
 //start :: base button
 import BaseButton from "./components/ui/BaseButton.vue";
 Vue.component("base-button", BaseButton);
