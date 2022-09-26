@@ -1,0 +1,30 @@
+.statistics_section {
+  .statistics_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    @media screen and (max-width: 1000px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media screen and (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+
+    .statistics_item {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 1.3rem;
+      background: white;
+      border-radius: 1rem;
+      font-size: 1.5rem;
+      color: var(--main_theme_clr);
+      .statistics_item_num {
+        color: #626262;
+      }
+      .statistics_item_icon {
+        font-size: 2rem;
+      }
+    }
+  }
+}

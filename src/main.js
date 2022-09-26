@@ -20,6 +20,10 @@ import BaseButton from "./components/ui/BaseButton.vue";
 Vue.component("base-button", BaseButton);
 //end :: base
 
+//start :: base del model
+import DeleteModel from "./components/ui/models/DeleteModel.vue";
+Vue.component("delete-model", DeleteModel);
+//end :: base del model
 new Vue({
   router,
   store,

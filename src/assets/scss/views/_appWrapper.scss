@@ -1,9 +1,15 @@
 .App_wrapper {
   background: var(--map_overlay_clr);
   min-height: 100vh;
+  color: #626262;
+  * {
+    font-family: $semi_bold_font;
+  }
   > div {
-    width: calc(100% - 256px);
+    width: calc(100% - 310px);
     margin-right: auto;
+    padding-top: 6rem;
+    padding-bottom: 1rem;
     @media screen and (max-width: 1264px) {
       width: 100%;
     }
@@ -13,7 +19,9 @@
     top: 1rem;
     left: 1rem;
     padding-right: 2rem;
-    width: calc(100% - 256px);
+    z-index: 18;
+    width: calc(100% - 310px);
+    // display: none;
     @media screen and (max-width: 1264px) {
       width: 100%;
     }
@@ -45,5 +53,95 @@
         cursor: pointer;
       }
     }
+  }
+
+  .v-breadcrumbs {
+    background-color: white;
+    border-radius: 1rem;
+    padding-right: 2rem !important;
+    margin-bottom: 1rem;
+    border-radius: 2rem;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 11%);
+
+    a {
+      color: var(--main_theme_clr) !important ;
+    }
+    .v-breadcrumbs__item--disabled {
+      color: rgb(156, 153, 153) !important;
+    }
+  }
+
+  .section_info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    border-radius: 20px;
+    .fa-chart-bar {
+      color: var(--main_theme_clr);
+      font-size: 2rem;
+    }
+  }
+}
+.v-data-table {
+  .v-data-table-header {
+    .text-start {
+      font-size: 1.3rem;
+      font-weight: bold !important;
+    }
+  }
+  .mdi-pencil {
+    color: orange;
+    font-size: 1.5rem !important;
+    margin-left: 0.8rem;
+  }
+  .mdi-delete {
+    color: red;
+    font-size: 1.5rem !important;
+  }
+  .tabel_add_btn_container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 2rem 0rem 1rem 2rem;
+    font-size: 1.2rem;
+    a {
+      color: var(--main_theme_clr);
+    }
+  }
+}
+
+.v-dialog__content {
+  .v-card {
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+      0 1px 5px 0 rgb(0 0 0 / 12%);
+    z-index: 2000px !important;
+  }
+  .delete_model {
+    padding: 2rem;
+  }
+  .v-card__title {
+    display: flex;
+    justify-content: center;
+    font-family: $medium_font !important;
+    color: var(--main_theme_clr);
+    margin-bottom: 1rem;
+  }
+  .model_delete_btn {
+    background-color: var(--mid_red_clr) !important;
+    margin-right: 1rem;
+    font-weight: bold;
+    padding-right: 2rem !important;
+    padding-left: 2rem !important;
+    // border-radius: 20px;
+  }
+  .model_cancel_btn {
+    margin-left: 1rem;
+    font-weight: bold;
+    background-color: var(--mid_green_clr) !important;
+    padding-right: 2rem !important;
+    padding-left: 2rem !important;
   }
 }

@@ -4,7 +4,7 @@
       :open="openNavigationDrawer"
       @drawer-opened="handleDrawerChange($event)"
     />
-    <div class="px-4 py-2">
+    <div class="px-4">
       <nav class="main_nav">
         <div class="nav_content d-flex">
           <div class="dashName">
@@ -29,6 +29,7 @@
           </div>
         </div>
       </nav>
+      <router-view></router-view>
     </div>
   </section>
 </template>
