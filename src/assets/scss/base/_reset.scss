@@ -12,7 +12,8 @@ body {
 }
 
 body[dir="rtl"] {
-  .v-text-field__slot {
+  .v-text-field__slot,
+  .v-select__slot {
     .v-label {
       right: 0px !important;
       left: auto !important;

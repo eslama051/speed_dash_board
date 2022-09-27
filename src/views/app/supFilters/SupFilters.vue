@@ -13,7 +13,7 @@
     >
       <template v-slot:top>
         <div class="tabel_add_btn_container">
-          <router-link to="/homeFilters/add"
+          <router-link to="/supFilters/add"
             ><i class="fa fa-plus"></i> إضافه جديد
           </router-link>
         </div>
@@ -60,9 +60,9 @@ export default {
           href: "/",
         },
         {
-          text: "تصنيفات رئيسيه",
+          text: "تصنيفات فرعية ",
           disabled: true,
-          href: "/",
+          href: "/mainFilters",
         },
         {
           text: "عرض الكل",
@@ -73,8 +73,8 @@ export default {
 
       headers: [
         {
-          text: "الصوره",
-          value: "image",
+          text: "اسم الغئه الأب",
+          value: "name",
           //   sortable: false,
         },
         {
@@ -90,64 +90,19 @@ export default {
       ],
       items: [
         {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
+          name: "الساعات الذكية - smart watches",
+          nameAr: "ساعة آبل Apple Watch 7",
+          nameEn: "Apple Watch 7",
         },
         {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
+          name: "الساعات الذكية - smart watches",
+          nameAr: "ساعة آبل Apple Watch 7",
+          nameEn: "Apple Watch 7",
         },
         {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
+          name: "الساعات الذكية - smart watches",
+          nameAr: "ساعة آبل Apple Watch 7",
+          nameEn: "Apple Watch 7",
         },
       ],
     };
@@ -161,6 +116,10 @@ export default {
     },
     deleteItem() {
       this.dialogDelete = "true";
+    },
+    editItem(item) {
+      console.log(item);
+      this.$router.push("/supFilters/edit/1");
     },
   },
 };

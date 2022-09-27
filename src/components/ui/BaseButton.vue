@@ -23,7 +23,7 @@ export default {
 $color: #6c98a2;
 .button {
   display: inline-block;
-  padding: 0.7rem 1.5rem;
+  padding: 0.7rem 2rem;
   border-radius: 10rem;
   color: #fff !important;
   text-transform: uppercase;

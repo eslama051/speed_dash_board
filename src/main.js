@@ -20,6 +20,11 @@ import BaseButton from "./components/ui/BaseButton.vue";
 Vue.component("base-button", BaseButton);
 //end :: base
 
+// start :: Particles
+// import Particles from "particles.vue";
+// Vue.use(Particles);
+// end :: Particles
+
 //start :: base del model
 import DeleteModel from "./components/ui/models/DeleteModel.vue";
 Vue.component("delete-model", DeleteModel);

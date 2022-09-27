@@ -1,0 +1,88 @@
+.show_client {
+  .show_client_header {
+    height: 200px;
+    border-radius: 1rem;
+    position: relative;
+    background-color: white;
+    //   overflow: hidden;
+    .show_client_header_user {
+      position: absolute;
+      bottom: 0;
+      right: 3rem;
+      transform: translateY(40%);
+      display: flex;
+      align-items: center;
+      column-gap: 1rem;
+      .show_client_header_user_img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 10px solid var(--map_overlay_clr);
+        img {
+          width: 100%;
+          display: block;
+        }
+      }
+      h4 {
+        font-size: 1.2rem;
+      }
+    }
+  }
+  .show_client_body {
+    margin-top: 5rem;
+    width: 100%;
+    // padding: 1rem;
+    .show_client_card {
+      position: relative;
+      width: 30rem;
+      height: 200px;
+      background-color: white;
+      border-top-left-radius: 4rem;
+      border-bottom-right-radius: 4rem;
+      border-top-right-radius: 2rem;
+      border-bottom-left-radius: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      @media screen and (max-width: 800px) {
+        width: 100%;
+      }
+    }
+
+    .user_icon {
+      color: green;
+      font-size: 1.5rem;
+      height: 80px;
+      width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 128, 0, 0.15);
+      border-radius: 50%;
+      position: relative;
+      margin-bottom: 1rem;
+      &::after {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        content: "";
+        border: 2px solid gray;
+        border-radius: 50%;
+        border-top-color: transparent !important;
+        border-bottom-color: transparent !important;
+        -webkit-animation: rotation 6s linear infinite;
+        animation: rotation 6s linear infinite;
+      }
+      @keyframes rotation {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  }
+}

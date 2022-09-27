@@ -74,27 +74,27 @@ export default {
       items: [
         {
           action: "",
-          items: [{ showAll: "/homeFilters", addNew: "/homeFilters/add" }],
+          items: [{ showAll: "/mainFilters", addNew: "/mainFilters/add" }],
           title: "تصنيفات رئيسيه",
         },
         {
           action: "",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/supFilters", addNew: "/supFilters/add" }],
           title: "تصنيفات فرعيه",
         },
         {
           action: "fa-hands-asl-interpreting",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/sliders", addNew: "/sliders/add" }],
           title: "الاسليدر الرئيسي",
         },
         {
           action: "fa-users",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/clients", addNew: "/clients/add" }],
           title: "المستخدمين",
         },
         {
           action: "fa-globe",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/countries", addNew: "/countries/add" }],
           title: "الدول",
         },
         {
