@@ -30,11 +30,53 @@ import AddClient from "../views/app/clients/AddClient.vue";
 import EditClient from "../views/app/clients/EditClient.vue";
 //end :: clients
 
-//start :: clients
+//start :: countries
 import CountriesTabel from "../views/app/countries/CountriesTabel.vue";
 import AddCountry from "../views/app/countries/AddCountry.vue";
 import EditCountry from "../views/app/countries/EditCountry.vue";
-//end :: clients
+//end :: countries
+
+//start :: cities
+import CitiesTabel from "../views/app/cities/CitiesTabel.vue";
+import AddCity from "../views/app/cities/AddCity.vue";
+import EditCity from "../views/app/cities/EditCity.vue";
+//end :: cities
+
+//start :: Permissions
+import PermissionsTabel from "../views/app/permissions/PermissionsTabel.vue";
+import AddPermission from "../views/app/permissions/AddPermission.vue";
+import EditPermission from "../views/app/permissions/EditPermission.vue";
+//end :: Permissions
+
+//start :: Permissions
+import AdesTabel from "../views/app/ades/AdesTabel.vue";
+import AddAd from "../views/app/ades/AddAd.vue";
+import EditAd from "../views/app/ades/EditAd.vue";
+//end :: Permissions
+
+//start :: Permissions
+import AdvsTabel from "../views/app/advs/AdvsTabel.vue";
+import AddAdv from "../views/app/advs/AddAdv.vue";
+import EditAdv from "../views/app/advs/EditAdv.vue";
+//end :: Permissions
+
+//start :: packages
+import PackagesTabel from "../views/app/packages/PackagesTabel.vue";
+import AddPackage from "../views/app/packages/AddPackage.vue";
+import EditPackage from "../views/app/packages/EditPackage.vue";
+//end :: packages
+
+//start :: promocode
+import PromoCode from "../views/app/promoCode/PromoCode.vue";
+import AddPromo from "../views/app/promoCode/AddPromo.vue";
+import EditPromo from "../views/app/promoCode/EditPromo.vue";
+//end :: promocode
+
+//start :: status
+import StatusTabel from "../views/app/status/StatusTabel.vue";
+import AddStatus from "../views/app/status/AddStatus.vue";
+import EditStatus from "../views/app/status/EditStatus.vue";
+//end :: status
 
 //end ::app views
 
@@ -70,6 +112,34 @@ const routes = [
       { path: "countries", component: CountriesTabel },
       { path: "countries/add", component: AddCountry },
       { path: "countries/edit/:id", component: EditCountry },
+      // cities
+      { path: "cities", component: CitiesTabel },
+      { path: "cities/add", component: AddCity },
+      { path: "cities/edit/:id", component: EditCity },
+      // permissions
+      { path: "permissions", component: PermissionsTabel },
+      { path: "permissions/add", component: AddPermission },
+      { path: "permissions/edit/:id", component: EditPermission },
+      // ades
+      { path: "ades", component: AdesTabel },
+      { path: "ades/add", component: AddAd },
+      { path: "ades/edit/:id", component: EditAd },
+      // advertisements
+      { path: "advertisements", component: AdvsTabel },
+      { path: "advertisements/add", component: AddAdv },
+      { path: "advertisements/edit/:id", component: EditAdv },
+      // packages
+      { path: "packages", component: PackagesTabel },
+      { path: "packages/add", component: AddPackage },
+      { path: "packages/edit/:id", component: EditPackage },
+      // promoCode
+      { path: "promoCode", component: PromoCode },
+      { path: "promoCode/add", component: AddPromo },
+      { path: "promoCode/edit/:id", component: EditPromo },
+      // status
+      { path: "status", component: StatusTabel },
+      { path: "status/add", component: AddStatus },
+      { path: "status/edit/:id", component: EditStatus },
     ],
   },
   { path: "/login", component: LogIn },

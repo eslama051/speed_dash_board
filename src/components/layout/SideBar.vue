@@ -17,7 +17,7 @@
     <v-divider class="d-none d-lg-block"></v-divider>
 
     <v-list>
-      <v-list-item link>
+      <v-list-item class="side_bar_route_link" link to="/">
         <v-list-item-icon>
           <v-icon>fa-home</v-icon>
         </v-list-item-icon>
@@ -26,6 +26,7 @@
           <v-list-item-title>الاحصائيات</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
       <v-list-group
         v-for="item in items"
         :key="item.title"
@@ -47,7 +48,8 @@
           </ul>
         </v-list-item>
       </v-list-group>
-      <v-list-item link>
+
+      <v-list-item class="side_bar_route_link" link to="/">
         <v-list-item-icon>
           <v-icon>fa-cog</v-icon>
         </v-list-item-icon>
@@ -99,37 +101,39 @@ export default {
         },
         {
           action: "fa-city",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/cities", addNew: "/cities/add" }],
           title: "المدن",
         },
         {
           action: "fa-allergies",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/permissions", addNew: "/permissions/add" }],
           title: "الصلاحيات",
         },
         {
           action: "fa-ad",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/ades", addNew: "/ades/add" }],
           title: "المنتجات",
         },
         {
           action: "fa-images",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [
+            { showAll: "/advertisements", addNew: "/advertisements/add" },
+          ],
           title: "الاعلانات",
         },
         {
           action: "fa-database",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/packages", addNew: "/packages/add" }],
           title: "الباقات",
         },
         {
           action: "fa-tags",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/promoCode", addNew: "/promoCode/add" }],
           title: "برومو كود",
         },
         {
           action: "fa-chart-bar",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/status", addNew: "/status/add" }],
           title: "الحالات",
         },
         {
@@ -161,6 +165,9 @@ export default {
     },
     closeNavDrawer() {
       this.drawerOpen = false;
+    },
+    routetohome() {
+      this.$router.push("/");
     },
   },
 };
