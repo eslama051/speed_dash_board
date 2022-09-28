@@ -14,12 +14,14 @@
     </div>
     <div class="show_client_body">
       <div class="show_client_card">
-        <div class="show_client_card_content">
-          <div class="user_icon">
-            <i class="fa fa-user"></i>
+        <div class="show_client_card_pseudo">
+          <div class="show_client_card_content">
+            <div class="user_icon">
+              <i class="fa fa-user"></i>
+            </div>
+            <h3>المعلومات الشخصيه</h3>
           </div>
         </div>
-        <h3>المعلومات الشخصيه</h3>
       </div>
     </div>
   </section>
