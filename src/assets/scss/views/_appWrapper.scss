@@ -123,6 +123,9 @@
       color: var(--main_theme_clr);
     }
   }
+  .text-start {
+    text-align: center !important;
+  }
 }
 
 .v-dialog__content {
@@ -262,7 +265,8 @@
     gap: 1rem;
 
     .uploaded_img_container {
-      width: 200px;
+      width: 220px;
+      height: 200px;
       border-radius: 10px;
       overflow: hidden;
       position: relative;
@@ -283,4 +287,14 @@
       }
     }
   }
+}
+
+.img_model {
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+.v-dialog {
+  box-shadow: none;
 }

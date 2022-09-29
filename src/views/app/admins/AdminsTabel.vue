@@ -13,7 +13,7 @@
     >
       <template v-slot:top>
         <div class="tabel_add_btn_container">
-          <router-link to="/clients/add"
+          <router-link to="/admins/add"
             ><i class="fa fa-plus"></i> إضافه جديد
           </router-link>
         </div>
@@ -32,14 +32,9 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogimg" max-width="700px">
-          <div class="img_model">
-            <img :src="src" alt="" />
-          </div>
-        </v-dialog>
       </template>
       <template v-slot:[`item.image`]="{ item }">
-        <div class="img-container" @click="opendialogimg(item.image)">
+        <div class="img-container">
           <img :src="item.image" alt="" />
         </div>
       </template>
@@ -49,13 +44,8 @@
           {{ item.active }}
         </v-chip>
       </template>
-      <template v-slot:[`item.blocked`]="{ item }">
-        <v-chip :color="getColorBlocked(item.blocked)" dark>
-          {{ item.blocked }}
-        </v-chip>
-      </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <router-link to="/clients/show/1">
+        <router-link to="/admins/show/1">
           <v-icon small> mdi-eye </v-icon>
         </router-link>
         <v-icon small @click="editItem(item)"> mdi-pencil </v-icon>
@@ -72,8 +62,6 @@ export default {
   data() {
     return {
       dialogDelete: false,
-      dialogimg: false,
-      src: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -81,9 +69,9 @@ export default {
           href: "/",
         },
         {
-          text: "المستخدمين",
+          text: "المديرين",
           disabled: true,
-          href: "/clients",
+          href: "/admins",
         },
         {
           text: "عرض الكل",
@@ -112,8 +100,8 @@ export default {
           value: "active",
         },
         {
-          text: "محظور؟",
-          value: "blocked",
+          text: "الصلاحيه",
+          value: "permission",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
@@ -124,15 +112,7 @@ export default {
           name: "eslam",
           phone: "010134315",
           active: "مفعل",
-          blocked: "غير محظور",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          name: "eslam",
-          phone: "010134315",
-          active: "غير مفعل",
-          blocked: "محظور",
+          permission: "new",
         },
       ],
     };
@@ -149,20 +129,11 @@ export default {
     },
     editItem(item) {
       console.log(item);
-      this.$router.push("/clients/edit/1");
+      this.$router.push("/admins/edit/1");
     },
     getColor(active) {
       if (active == "مفعل") return "green";
       else return "red";
-    },
-    getColorBlocked(blocked) {
-      if (blocked == "غير محظور") return "green";
-      else return "red";
-    },
-    opendialogimg(src) {
-      this.dialogimg = true;
-      this.src = src;
-      console.log(src);
     },
   },
 };

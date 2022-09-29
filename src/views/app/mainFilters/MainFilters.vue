@@ -32,9 +32,14 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog v-model="dialogimg" max-width="700px">
+          <div class="img_model">
+            <img :src="src" alt="" />
+          </div>
+        </v-dialog>
       </template>
       <template v-slot:[`item.image`]="{ item }">
-        <div class="img-container">
+        <div class="img-container" @click="opendialogimg(item.image)">
           <img :src="item.image" alt="" />
         </div>
       </template>
@@ -53,6 +58,8 @@ export default {
   data() {
     return {
       dialogDelete: false,
+      dialogimg: false,
+      src: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -162,9 +169,15 @@ export default {
     deleteItem() {
       this.dialogDelete = "true";
     },
+
     editItem(item) {
       console.log(item);
       this.$router.push("/homeFilters/edit/1");
+    },
+    opendialogimg(src) {
+      this.dialogimg = true;
+      this.src = src;
+      console.log(src);
     },
   },
 };

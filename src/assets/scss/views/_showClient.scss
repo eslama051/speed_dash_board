@@ -27,6 +27,13 @@
       h4 {
         font-size: 1.2rem;
       }
+      @media screen and (max-width: 466px) {
+        right: 1rem;
+        .show_client_header_user_img {
+          width: 120px;
+          height: 120px;
+        }
+      }
     }
   }
   .show_client_body {

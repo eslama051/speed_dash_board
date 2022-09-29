@@ -138,17 +138,19 @@ export default {
         },
         {
           action: "fa-truck-moving",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/shipping", addNew: "/shipping/add" }],
           title: "طرق الشحن",
         },
         {
           action: "fa-user-tie",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [{ showAll: "/admins", addNew: "/admins/add" }],
           title: "مديرين اللوحه",
         },
         {
           action: "fa-atlas",
-          items: [{ showAll: "/", addNew: "/" }],
+          items: [
+            { showAll: "/commonQuestions", addNew: "/commonQuestions/add" },
+          ],
           title: "الأسئله الشائعه",
         },
       ],

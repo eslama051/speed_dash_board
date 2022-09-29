@@ -13,7 +13,7 @@
     >
       <template v-slot:top>
         <div class="tabel_add_btn_container">
-          <router-link to="/clients/add"
+          <router-link to="/shipping/add"
             ><i class="fa fa-plus"></i> إضافه جديد
           </router-link>
         </div>
@@ -32,33 +32,14 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogimg" max-width="700px">
-          <div class="img_model">
-            <img :src="src" alt="" />
-          </div>
-        </v-dialog>
       </template>
       <template v-slot:[`item.image`]="{ item }">
-        <div class="img-container" @click="opendialogimg(item.image)">
+        <div class="img-container">
           <img :src="item.image" alt="" />
         </div>
       </template>
-
-      <template v-slot:[`item.active`]="{ item }">
-        <v-chip :color="getColor(item.active)" dark>
-          {{ item.active }}
-        </v-chip>
-      </template>
-      <template v-slot:[`item.blocked`]="{ item }">
-        <v-chip :color="getColorBlocked(item.blocked)" dark>
-          {{ item.blocked }}
-        </v-chip>
-      </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <router-link to="/clients/show/1">
-          <v-icon small> mdi-eye </v-icon>
-        </router-link>
-        <v-icon small @click="editItem(item)"> mdi-pencil </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
@@ -72,8 +53,6 @@ export default {
   data() {
     return {
       dialogDelete: false,
-      dialogimg: false,
-      src: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -81,9 +60,9 @@ export default {
           href: "/",
         },
         {
-          text: "المستخدمين",
+          text: "طرق الشحن",
           disabled: true,
-          href: "/clients",
+          href: "/shipping",
         },
         {
           text: "عرض الكل",
@@ -94,45 +73,24 @@ export default {
 
       headers: [
         {
-          text: "الصوره",
-          value: "image",
+          text: "الاسم (عريي)",
+          value: "statusAr",
           //   sortable: false,
         },
         {
-          text: "الاسم",
-          value: "name",
-          //   sortable: false,
-        },
-        {
-          text: "الهاتف",
-          value: "phone",
-        },
-        {
-          text: "مفعل؟",
-          value: "active",
-        },
-        {
-          text: "محظور؟",
-          value: "blocked",
+          text: "الاسم (انجيزي)",
+          value: "statusEn",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
       items: [
         {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          name: "eslam",
-          phone: "010134315",
-          active: "مفعل",
-          blocked: "غير محظور",
+          statusAr: "جمهورية مصر العربيه",
+          statusEn: "Egypt",
         },
         {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          name: "eslam",
-          phone: "010134315",
-          active: "غير مفعل",
-          blocked: "محظور",
+          statusAr: "جمهورية مصر العربيه",
+          statusEn: "Egypt",
         },
       ],
     };
@@ -149,20 +107,7 @@ export default {
     },
     editItem(item) {
       console.log(item);
-      this.$router.push("/clients/edit/1");
-    },
-    getColor(active) {
-      if (active == "مفعل") return "green";
-      else return "red";
-    },
-    getColorBlocked(blocked) {
-      if (blocked == "غير محظور") return "green";
-      else return "red";
-    },
-    opendialogimg(src) {
-      this.dialogimg = true;
-      this.src = src;
-      console.log(src);
+      this.$router.push("/shipping/edit/1");
     },
   },
 };

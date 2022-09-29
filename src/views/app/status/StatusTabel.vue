@@ -60,9 +60,9 @@ export default {
           href: "/",
         },
         {
-          text: "تصنيفات فرعية ",
+          text: "الحالات",
           disabled: true,
-          href: "/mainFilters",
+          href: "/shipping",
         },
         {
           text: "عرض الكل",
