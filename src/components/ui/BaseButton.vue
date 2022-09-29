@@ -1,6 +1,11 @@
 <template>
   <router-link v-if="link" :to="to" class="button"><slot /></router-link>
-  <button v-else class="button"><slot /></button>
+  <button v-else class="button">
+    <slot v-if="!isLoading" />
+    <div class="button_loading_spinner" v-else>
+      <img src="../../assets/media/gifs/Spinner1.gif" alt="" />
+    </div>
+  </button>
 </template>
 
 <script>
@@ -15,6 +20,11 @@ export default {
       type: String,
       required: false,
     },
+    isLoading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 };
 </script>
@@ -22,7 +32,13 @@ export default {
 <style lang="scss" scoped>
 $color: #6c98a2;
 .button {
-  display: inline-block;
+  // display: inline-block;
+  min-height: 46px;
+  min-width: 150px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0.7rem 2rem;
   border-radius: 10rem;
   color: #fff !important;
@@ -61,6 +77,16 @@ $color: #6c98a2;
     &:before {
       width: 100%;
     }
+  }
+  .button_loading_spinner {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+  }
+  img {
+    width: 100%;
+    display: block;
+    height: 100%;
   }
 }
 </style>

@@ -10,10 +10,11 @@
       :items="items"
       hide-default-footer
       class="elevation-1"
+      :loading="isloading"
     >
       <template v-slot:top>
         <div class="tabel_add_btn_container">
-          <router-link to="/homeFilters/add"
+          <router-link to="/mainFilters/add"
             ><i class="fa fa-plus"></i> إضافه جديد
           </router-link>
         </div>
@@ -44,15 +45,18 @@
         </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item.id)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
   </section>
 </template>
 
 <script>
-// import DeleteModel from "@/components/ui/models/DeleteModel.vue";
+import server from "@/apis/server";
+
 export default {
   // components: { DeleteModel },
   data() {
@@ -60,6 +64,8 @@ export default {
       dialogDelete: false,
       dialogimg: false,
       src: "",
+      id: "",
+      isloading: false,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -86,76 +92,76 @@ export default {
         },
         {
           text: "الاسم(عريي)",
-          value: "nameAr",
+          value: "ar.name",
           //   sortable: false,
         },
         {
           text: "الاسم(انجيزي)",
-          value: "nameEn",
+          value: "en.name",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
       items: [
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          nameAr: "إكسسوارات الهواتف",
-          nameEn: "Phone Accessories",
-        },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
+        // {
+        //   image:
+        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
+        //   nameAr: "إكسسوارات الهواتف",
+        //   nameEn: "Phone Accessories",
+        // },
       ],
     };
   },
@@ -164,21 +170,56 @@ export default {
       console.log("smth");
     },
     deleteItemConfirm() {
-      console.log("smth");
+      server
+        .delete(`/dashboard/category/${this.id}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.$iziToast.success({
+            message: res.data.message,
+          });
+          this.getCategories();
+        })
+        .catch((res) => {
+          this.$iziToast.error({
+            message: res.response.message,
+          });
+        });
+      this.dialogDelete = false;
     },
-    deleteItem() {
+    deleteItem(id) {
+      this.id = id;
       this.dialogDelete = "true";
     },
 
-    editItem(item) {
-      console.log(item);
-      this.$router.push("/homeFilters/edit/1");
+    editItem(id) {
+      // console.log(item);
+      this.$router.push(`/mainFilters/edit/${id}`);
     },
     opendialogimg(src) {
       this.dialogimg = true;
       this.src = src;
       console.log(src);
     },
+    getCategories() {
+      this.isloading = true;
+      server
+        .get("/dashboard/category", {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.items = res.data.data;
+          this.isloading = false;
+        });
+    },
+  },
+  mounted() {
+    this.getCategories();
   },
 };
 </script>

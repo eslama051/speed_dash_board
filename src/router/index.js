@@ -97,6 +97,18 @@ import AddQuestion from "../views/app/commonQuestions/AddQuestion.vue";
 import EditQuestion from "../views/app/commonQuestions/EditQuestion.vue";
 //end :: commonQuestions
 
+//start :: settings
+import SettingsContainer from "../views/app/settings/SettingsContainer.vue";
+import AboutUs from "../views/app/settings/AboutUs.vue";
+import AboutUsEdit from "../views/app/settings/AboutUsEdit.vue";
+import TermsAndConditions from "../views/app/settings/TermsAndConditions.vue";
+import TermsEdit from "../views/app/settings/TermsEdit.vue";
+import PrivacyPolicy from "../views/app/settings/PrivacyPolicy.vue";
+import PrivacyPolicyEdit from "../views/app/settings/PrivacyPolicyEdit.vue";
+import ContactUs from "../views/app/settings/ContactUs.vue";
+import ContactUsEdit from "../views/app/settings/ContactUsEdit.vue";
+//end :: settings
+
 //end ::app views
 
 // login
@@ -113,74 +125,111 @@ const routes = [
       //main filters
       { path: "mainFilters", component: MainFilters },
       { path: "mainFilters/add", component: AddMainFilter },
-      { path: "mainFilters/edit/:id", component: EditMainFilter },
+      { path: "mainFilters/edit/:id", component: EditMainFilter, props: true },
       //sup filters
       { path: "supFilters", component: SubFilters },
       { path: "supFilters/add", component: AddSubFilter },
-      { path: "supFilters/edit/:id", component: EditSubFilter },
+      { path: "supFilters/edit/:id", component: EditSubFilter, props: true },
       //main sliders
       { path: "sliders", component: MainSliders },
       { path: "sliders/add", component: AddMainSlider },
-      { path: "sliders/edit/:id", component: EditMainSlider },
+      { path: "sliders/edit/:id", component: EditMainSlider, props: true },
       // clients
       { path: "clients", component: ClientsTabel },
       { path: "clients/show/:id", component: ShowClient },
       { path: "clients/add", component: AddClient },
-      { path: "clients/edit/:id", component: EditClient },
+      { path: "clients/edit/:id", component: EditClient, props: true },
       // countries
       { path: "countries", component: CountriesTabel },
       { path: "countries/add", component: AddCountry },
-      { path: "countries/edit/:id", component: EditCountry },
+      { path: "countries/edit/:id", component: EditCountry, props: true },
       // cities
       { path: "cities", component: CitiesTabel },
       { path: "cities/add", component: AddCity },
-      { path: "cities/edit/:id", component: EditCity },
+      { path: "cities/edit/:id", component: EditCity, props: true },
       // permissions
       { path: "permissions", component: PermissionsTabel },
       { path: "permissions/add", component: AddPermission },
-      { path: "permissions/edit/:id", component: EditPermission },
+      { path: "permissions/edit/:id", component: EditPermission, props: true },
       // ades
       { path: "ades", component: AdesTabel },
       { path: "ades/add", component: AddAd },
-      { path: "ades/edit/:id", component: EditAd },
+      { path: "ades/edit/:id", component: EditAd, props: true },
       // advertisements
       { path: "advertisements", component: AdvsTabel },
       { path: "advertisements/add", component: AddAdv },
-      { path: "advertisements/edit/:id", component: EditAdv },
+      { path: "advertisements/edit/:id", component: EditAdv, props: true },
       // packages
       { path: "packages", component: PackagesTabel },
       { path: "packages/add", component: AddPackage },
-      { path: "packages/edit/:id", component: EditPackage },
+      { path: "packages/edit/:id", component: EditPackage, props: true },
       // promoCode
       { path: "promoCode", component: PromoCode },
       { path: "promoCode/add", component: AddPromo },
-      { path: "promoCode/edit/:id", component: EditPromo },
+      { path: "promoCode/edit/:id", component: EditPromo, props: true },
       // status
       { path: "status", component: StatusTabel },
       { path: "status/add", component: AddStatus },
-      { path: "status/edit/:id", component: EditStatus },
+      { path: "status/edit/:id", component: EditStatus, props: true },
       // shipping
       { path: "shipping", component: ShippingTabel },
       { path: "shipping/add", component: AddShipping },
-      { path: "shipping/edit/:id", component: EditShipping },
+      { path: "shipping/edit/:id", component: EditShipping, props: true },
       // admins
       { path: "admins", component: AdminsTabel },
       { path: "admins/show/:id", component: ShowAdmin },
       { path: "admins/add", component: AddAdmin },
-      { path: "admins/edit/:id", component: EditAdmin },
+      { path: "admins/edit/:id", component: EditAdmin, props: true },
       // commonQuestions
       { path: "commonQuestions", component: CommonQuestions },
       { path: "commonQuestions/add", component: AddQuestion },
-      { path: "commonQuestions/edit/:id", component: EditQuestion },
+      {
+        path: "commonQuestions/edit/:id",
+        component: EditQuestion,
+        props: true,
+      },
+      // settings
+      {
+        path: "settings",
+        component: SettingsContainer,
+        children: [
+          { path: "", component: AboutUs },
+          { path: "aboutUs/edit", component: AboutUsEdit },
+          { path: "terms", component: TermsAndConditions },
+          { path: "terms/edit", component: TermsEdit, props: true },
+          { path: "privacyPolicy", component: PrivacyPolicy },
+          {
+            path: "privacyPolicy/edit",
+            component: PrivacyPolicyEdit,
+            props: true,
+          },
+          { path: "contactUs", component: ContactUs },
+          { path: "contactUs/edit", component: ContactUsEdit, props: true },
+        ],
+      },
     ],
   },
   { path: "/login", component: LogIn },
 ];
-
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (
+    localStorage.getItem("Speed_Dash_User_token") &&
+    to.fullPath == "/login"
+  ) {
+    next("/");
+  }
+  if (
+    !localStorage.getItem("Speed_Dash_User_token") &&
+    to.fullPath !== "/login"
+  ) {
+    next("/login");
+  }
+  next();
+});
 export default router;

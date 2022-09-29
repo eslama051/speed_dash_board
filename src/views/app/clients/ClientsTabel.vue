@@ -34,7 +34,7 @@
         </v-dialog>
         <v-dialog v-model="dialogimg" max-width="700px">
           <div class="img_model">
-            <img :src="src" alt="" />
+            <img :src="dialogImgSrc" alt="" />
           </div>
         </v-dialog>
       </template>
@@ -73,7 +73,7 @@ export default {
     return {
       dialogDelete: false,
       dialogimg: false,
-      src: "",
+      dialogImgSrc: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -161,7 +161,7 @@ export default {
     },
     opendialogimg(src) {
       this.dialogimg = true;
-      this.src = src;
+      this.dialogImgSrc = src;
       console.log(src);
     },
   },

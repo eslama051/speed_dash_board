@@ -39,20 +39,29 @@
         </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item.id)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+    <div class="text-center pt-2">
+      <v-pagination dir="ltr" v-model="page" :length="pageCount"></v-pagination>
+    </div>
   </section>
 </template>
 
 <script>
+import server from "@/apis/server";
 // import DeleteModel from "@/components/ui/models/DeleteModel.vue";
 export default {
   // components: { DeleteModel },
   data() {
     return {
       dialogDelete: false,
+      page: "",
+      pageCount: "",
+      selecetedItemId: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -74,38 +83,27 @@ export default {
       headers: [
         {
           text: "اسم الغئه الأب",
-          value: "name",
+          value: "category.ar.name",
           //   sortable: false,
         },
         {
           text: "الاسم(عريي)",
-          value: "nameAr",
+          value: "ar.name",
           //   sortable: false,
         },
         {
           text: "الاسم(انجيزي)",
-          value: "nameEn",
+          value: "en.name",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
-      items: [
-        {
-          name: "الساعات الذكية - smart watches",
-          nameAr: "ساعة آبل Apple Watch 7",
-          nameEn: "Apple Watch 7",
-        },
-        {
-          name: "الساعات الذكية - smart watches",
-          nameAr: "ساعة آبل Apple Watch 7",
-          nameEn: "Apple Watch 7",
-        },
-        {
-          name: "الساعات الذكية - smart watches",
-          nameAr: "ساعة آبل Apple Watch 7",
-          nameEn: "Apple Watch 7",
-        },
-      ],
+      items: [],
     };
+  },
+  watch: {
+    page() {
+      this.getitesmPerPage(this.page);
+    },
   },
   methods: {
     closeDelete() {
@@ -121,6 +119,16 @@ export default {
       console.log(item);
       this.$router.push("/supFilters/edit/1");
     },
+    getitesmPerPage(currPage) {
+      server.get(`/dashboard/subCategory?page=${currPage}`).then((res) => {
+        this.items = res.data.data;
+        this.page = res.data.meta.current_page;
+        this.pageCount = res.data.meta.last_page;
+      });
+    },
+  },
+  mounted() {
+    this.getitesmPerPage();
   },
 };
 </script>

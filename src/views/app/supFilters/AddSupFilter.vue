@@ -10,6 +10,8 @@
           <v-select
             class="input col-md-4"
             :items="items"
+            item-text="ar.name"
+            item-value="id"
             label="التصنيف الرئيسي"
           ></v-select>
         </v-row>
@@ -21,6 +23,7 @@
 
 <script>
 import BaseButton from "@/components/ui/BaseButton.vue";
+import server from "@/apis/server";
 export default {
   components: { BaseButton },
   data() {
@@ -53,6 +56,15 @@ export default {
       },
     };
   },
-  methods: {},
+  methods: {
+    getMianCategories() {
+      server.get("/dashboard/category").then((res) => {
+        this.items = res.data.data;
+      });
+    },
+  },
+  mounted() {
+    this.getMianCategories();
+  },
 };
 </script>

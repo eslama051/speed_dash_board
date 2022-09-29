@@ -49,7 +49,7 @@
         </v-list-item>
       </v-list-group>
 
-      <v-list-item class="side_bar_route_link" link to="/">
+      <v-list-item class="side_bar_route_link" link to="/settings">
         <v-list-item-icon>
           <v-icon>fa-cog</v-icon>
         </v-list-item-icon>

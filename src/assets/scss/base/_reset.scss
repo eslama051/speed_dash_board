@@ -41,6 +41,10 @@ ul {
 .fide-leave-to {
   opacity: 0;
 }
+.fide-enter-to,
+.fide-leave-from {
+  opacity: 1;
+}
 
 // end:: fide transition
 
@@ -57,3 +61,17 @@ ul {
   opacity: 0;
 }
 // end:: fide-slide transition
+.fadeInUp-enter-active,
+.fadeInUp-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  overflow: hidden;
+}
+.fadeInUp-enter,
+.fadeInUp-leave-to {
+  opacity: 0;
+}
+.fadeInUp-enter-to,
+.fadeInUp-leave {
+  opacity: 1;
+}

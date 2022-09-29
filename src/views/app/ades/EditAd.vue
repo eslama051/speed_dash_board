@@ -212,5 +212,6 @@ export default {
       this.imgSrcs.splice(index, 1);
     },
   },
+  mounted() {},
 };
 </script>

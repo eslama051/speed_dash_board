@@ -20,6 +20,18 @@ import BaseButton from "./components/ui/BaseButton.vue";
 Vue.component("base-button", BaseButton);
 //end :: base
 
+// START:: IMPORTING IZI TOAST
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
+Vue.use(iziToast);
+Vue.prototype.$iziToast = iziToast;
+// END:: IMPORTING IZI TOAST
+
+//start :: button spinner importing
+import ButtonSpinner from "vue-button-spinner";
+Vue.component("button-spinner", ButtonSpinner);
+//end :: button spinner
+
 // start :: Particles
 // import Particles from "particles.vue";
 // Vue.use(Particles);
