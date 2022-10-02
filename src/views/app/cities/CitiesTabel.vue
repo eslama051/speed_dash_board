@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     closeDelete() {
-      console.log("smth");
+      this.dialogDelete = false;
     },
     deleteItemConfirm() {
       server

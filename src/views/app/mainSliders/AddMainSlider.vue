@@ -5,7 +5,12 @@
       <h3 class="form_title">إضافه جديد</h3>
 
       <div class="img-edit">
-        <img :src="imageSrc" id="account-detail-img-output" alt="" v-if="img" />
+        <img
+          :src="imageSrc"
+          id="account-detail-img-output"
+          alt=""
+          v-if="imageSrc"
+        />
         <label for="file" class="img-input_label_text" v-else>Main Image</label>
         <label for="file" class="img-input"><i class="fa fa-edit"></i></label>
         <input
@@ -147,7 +152,7 @@ export default {
           this.isLoading = false;
           this.nameAr = "";
           this.nameEn = "";
-          this.imgSrc = "";
+          this.imageSrc = "";
           this.img = "";
           this.descAr = "";
           this.descEn = "";

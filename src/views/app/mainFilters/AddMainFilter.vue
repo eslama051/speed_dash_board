@@ -4,10 +4,13 @@
     <v-form class="curd_form" @submit.prevent="submitForm">
       <h3 class="form_title">إضافه جديد</h3>
       <div class="img-edit">
-        <img :src="imgSrc" id="account-detail-img-output" alt="" v-if="img" />
-        <label for="file" class="img-input_label_text" v-if="!img"
-          >Main Image</label
-        >
+        <img
+          :src="imgSrc"
+          id="account-detail-img-output"
+          alt=""
+          v-if="imgSrc"
+        />
+        <label for="file" class="img-input_label_text" v-else>Main Image</label>
         <label for="file" class="img-input"><i class="fa fa-edit"></i></label>
         <input
           type="file"
@@ -56,7 +59,7 @@ export default {
       imgSrc: "",
       nameAr: "",
       nameEn: "",
-      show: false,
+
       isLoading: false,
     };
   },

@@ -154,13 +154,7 @@ export default {
             message: res.data.message,
           });
           this.isLoading = false;
-          this.nameAr = "";
-          this.nameEn = "";
-          this.imageSrc = "";
-          this.img = "";
-          this.descAr = "";
-          this.descEn = "";
-          this.link = "";
+          this.$router.push("/sliders");
         })
         .catch((res) => {
           console.log(res);

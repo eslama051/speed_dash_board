@@ -36,8 +36,13 @@
   }
   .nav_drawer_group_list {
     .group_list_dropdown_items {
-      list-style-type: circle;
+      list-style-type: none;
       padding-right: 3rem;
+      width: 100%;
+      padding: 0 !important;
+      .v-list-item {
+        padding: 0 !important;
+      }
       li {
         padding: 0.7rem;
         transition: all 0.3s;
@@ -49,6 +54,10 @@
         a {
           color: inherit;
           transition: all 0.3s;
+          width: 100%;
+          &:hover {
+            padding-right: 1rem;
+          }
         }
       }
     }

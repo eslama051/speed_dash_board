@@ -8,6 +8,7 @@
     <v-data-table
       :headers="headers"
       :items="items"
+      :loading="isLoading"
       hide-default-footer
       class="elevation-1"
     >
@@ -77,6 +78,7 @@ export default {
       pageCount: 1,
       total: 0,
       deleteId: "",
+      isLoading: false,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -125,7 +127,7 @@ export default {
   },
   methods: {
     closeDelete() {
-      console.log("smth");
+      this.dialogDelete = false;
     },
     deleteItemConfirm() {
       server

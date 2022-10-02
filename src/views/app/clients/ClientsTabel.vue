@@ -9,6 +9,7 @@
       :headers="headers"
       :items="items"
       :items-per-page="total"
+      :loading="isLoading"
       hide-default-footer
       class="elevation-1"
     >
@@ -81,6 +82,7 @@ export default {
       pageCount: 0,
       total: 0,
       deleteId: "",
+      isLoading: false,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -134,7 +136,7 @@ export default {
   },
   methods: {
     closeDelete() {
-      console.log("smth");
+      this.dialogDelete = false;
     },
     deleteItemConfirm() {
       server
@@ -158,7 +160,7 @@ export default {
     },
     deleteItem(id) {
       this.deleteId = id;
-      this.dialogDelete = "true";
+      this.dialogDelete = true;
     },
     editItem(id) {
       this.$router.push(`/clients/edit/${id}`);
@@ -180,6 +182,7 @@ export default {
       console.log(src);
     },
     getitesmPerPage(currPage) {
+      this.isLoading = true;
       server
         .get(`/dashboard/client?page=${currPage}`, {
           headers: {
@@ -187,6 +190,7 @@ export default {
           },
         })
         .then((res) => {
+          this.isLoading = false;
           this.items = res.data.data;
           this.total = res.data.meta.total;
           this.page = res.data.meta.current_page;

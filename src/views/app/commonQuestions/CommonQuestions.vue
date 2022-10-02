@@ -1,14 +1,17 @@
 <template>
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
-    <div class="section_info">
+
+    <div class="section_info col-md-3">
       <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
+
     <v-data-table
       :headers="headers"
       :items="items"
       :items-per-page="total"
+      :loading="isLoading"
       hide-default-footer
       class="elevation-1"
     >
@@ -64,6 +67,7 @@ export default {
       pageCount: 1,
       total: 0,
       deleteId: "",
+      isLoading: false,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -150,6 +154,7 @@ export default {
       this.$router.push(`/commonQuestions/edit/${id}`);
     },
     getitesmPerPage() {
+      this.isLoading = true;
       server
         .get(`/dashboard/faq?page=${this.page}`, {
           headers: {
@@ -157,6 +162,7 @@ export default {
           },
         })
         .then((res) => {
+          this.isLoading = false;
           this.items = res.data.data;
           this.total = res.data.meta.total;
           this.page = res.data.meta.current_page;

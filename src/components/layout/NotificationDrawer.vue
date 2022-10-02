@@ -4,7 +4,7 @@
       <h3 class="text-center">
         {{ NotificationsData.unread_notifications }} جديد
       </h3>
-      <h4 class="text-center">اشعارت التطبيق</h4>
+      <h4 class="text-center">ا شعارت التطبيق</h4>
     </div>
     <ul class="notification_drawer_body">
       <li

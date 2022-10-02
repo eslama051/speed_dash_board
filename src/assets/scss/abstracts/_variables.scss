@@ -60,3 +60,8 @@ $semi_bold_font: "Cairo-SemiBold";
 $bold_font: "Cairo-Bold";
 $extra_bold_font: "Cairo-ExtraBold";
 // END:: ARABIC FONTS
+body {
+  &.dark {
+    --theme_main_bg_clr: red;
+  }
+}

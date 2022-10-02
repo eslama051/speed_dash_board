@@ -11,7 +11,11 @@
       <i class="fa fa-xmark"></i>
     </button>
     <v-list-item class="mb-2 d-none d-lg-block">
-      <v-img src="../../assets/media/logo/logo.svg" />
+      <v-img
+        src="../../assets/media/logo/logo.svg"
+        max-width="210px"
+        class="mb-3 mx-auto"
+      />
     </v-list-item>
 
     <v-divider class="d-none d-lg-block"></v-divider>
