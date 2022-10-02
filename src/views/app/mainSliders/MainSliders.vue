@@ -2,11 +2,13 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
       :headers="headers"
+      :loading="isloading"
+      :items-per-page="total"
       :items="items"
       hide-default-footer
       class="elevation-1"
@@ -32,27 +34,40 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog v-model="dialogimg" max-width="700px">
+          <div class="img_model">
+            <img :src="imgModelSrc" alt="" />
+          </div>
+        </v-dialog>
       </template>
       <template v-slot:[`item.image`]="{ item }">
-        <div class="img-container">
+        <div class="img-container" @click="opendialogimg(item.image)">
           <img :src="item.image" alt="" />
         </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item.id)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
   </section>
 </template>
 
 <script>
-// import DeleteModel from "@/components/ui/models/DeleteModel.vue";
+import server from "@/apis/server";
+
 export default {
   // components: { DeleteModel },
   data() {
     return {
       dialogDelete: false,
+      dialogimg: false,
+      imgModelSrc: "",
+      deleteId: "",
+      total: 0,
+      isloading: false,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -78,46 +93,27 @@ export default {
           //   sortable: false,
         },
         {
-          text: "العنوان\n(عريي)",
-          value: "typeAr",
+          text: "العنوان(عريي)",
+          value: "ar.name",
           //   sortable: false,
         },
         {
-          text: "العنوان\n(انجيزي)",
-          value: "typeEn",
+          text: "الاسم(انجيزي)",
+          value: "en.name",
         },
         {
-          text: "المحتوي(عربي)",
-          value: "contentAr",
+          text: "المحتوي(عريي)",
+          value: "ar.desc",
+          //   sortable: false,
         },
         {
           text: "المحتوي(انجليزي)",
-          value: "contentEn",
+          value: "en.desc",
+          //   sortable: false,
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
-      items: [
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          typeAr: "ملابس",
-          typeEn: "clothes",
-          contentAr:
-            "إذا كنت تبحث عن صفقة جيدة ، فستجدها في منصة Speed4Ever. تتوفر السيارات ، والعقارات ، والملابس ، والأثاث ، بأسعار تناسب ميزانيتك في Speed4Ever مع تنوع الخيارات التي بإمكانك شرائها.",
-          contentEn:
-            "If you are looking for a good deal, you will find it at Speed4Ever. Cars, real estate, clothing, and furniture are all available at budget-friendly prices at Speed4Ever with a variety of options you can buy.",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          typeAr: "ملابس",
-          typeEn: "clothes",
-          contentAr:
-            "إذا كنت تبحث عن صفقة جيدة ، فستجدها في منصة Speed4Ever. تتوفر السيارات ، والعقارات ، والملابس ، والأثاث ، بأسعار تناسب ميزانيتك في Speed4Ever مع تنوع الخيارات التي بإمكانك شرائها.",
-          contentEn:
-            "If you are looking for a good deal, you will find it at Speed4Ever. Cars, real estate, clothing, and furniture are all available at budget-friendly prices at Speed4Ever with a variety of options you can buy.",
-        },
-      ],
+      items: [],
     };
   },
   methods: {
@@ -125,15 +121,62 @@ export default {
       console.log("smth");
     },
     deleteItemConfirm() {
-      console.log("smth");
+      server
+        .delete(`/dashboard/slider/${this.deleteId}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.$iziToast.success({
+            message: res.data.message,
+          });
+          this.getSliderItems();
+        })
+        .catch((res) => {
+          this.$iziToast.error({
+            message: res.response.message,
+          });
+        });
+      this.dialogDelete = false;
     },
-    deleteItem() {
+    deleteItem(id) {
+      this.deleteId = id;
       this.dialogDelete = "true";
     },
-    editItem(item) {
-      console.log(item);
-      this.$router.push("/sliders/edit/1");
+    editItem(id) {
+      this.$router.push(`/sliders/edit/${id}`);
     },
+    opendialogimg(src) {
+      this.dialogimg = true;
+      this.imgModelSrc = src;
+      console.log(src);
+    },
+    getSliderItems() {
+      this.isloading = true;
+      server
+        .get("/dashboard/slider", {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.isloading = false;
+          this.items = res.data.data;
+          this.total = res.data.meta.total;
+          this.isloading = false;
+        })
+        .catch((res) => {
+          this.isloading = false;
+          this.$iziToast.error({
+            message: res.response.data.message,
+          });
+        });
+    },
+  },
+  mounted() {
+    this.getSliderItems();
   },
 };
 </script>

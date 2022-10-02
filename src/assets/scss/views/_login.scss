@@ -29,12 +29,13 @@
 .input {
   width: 80%;
   // max-width: 30rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 
   .v-input__slot {
     border: 2px solid var(--main_theme_clr);
     padding: 1rem;
     border-radius: 2rem;
+
     // position: relative
     &::after,
     &::before {

@@ -8,8 +8,20 @@ export default new Vuex.Store({
   modules: {
     auth: authModule,
   },
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
+  state: { isNavDrawer: null },
+  getters: {
+    isNavDrawer(state) {
+      return state.isNavDrawer;
+    },
+  },
+  mutations: {
+    toggleNavDrawer(state) {
+      state.isNavDrawer = !state.isNavDrawer;
+    },
+  },
+  actions: {
+    toggleNavDrawer(context) {
+      context.commit("toggleNavDrawer");
+    },
+  },
 });

@@ -33,6 +33,7 @@ export default {
   },
   methods: {
     getHomeData() {
+      console.log(this.$store.getters["auth/token"]);
       server
         .get("/dashboard/home", {
           headers: {
@@ -40,12 +41,11 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data.data.home);
           this.items = res.data.data.home;
         });
     },
   },
-  mounted() {
+  created() {
     this.getHomeData();
   },
 };

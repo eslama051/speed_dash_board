@@ -2,12 +2,14 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
       :headers="headers"
       :items="items"
+      :items-per-page="total"
+      :loading="isloading"
       hide-default-footer
       class="elevation-1"
     >
@@ -43,16 +45,25 @@
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+    <div class="text-center pt-2">
+      <v-pagination dir="ltr" v-model="page" :length="pageCount"></v-pagination>
+    </div>
   </section>
 </template>
 
 <script>
+import server from "@/apis/server";
 // import DeleteModel from "@/components/ui/models/DeleteModel.vue";
 export default {
   // components: { DeleteModel },
   data() {
     return {
       dialogDelete: false,
+      page: 1,
+      pageCount: 1,
+      total: 0,
+      deleleteId: "",
+      isloading: false,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -74,25 +85,16 @@ export default {
       headers: [
         {
           text: "اسم الصلاحيه (عريي)",
-          value: "permissionAr",
+          value: "ar.name",
           //   sortable: false,
         },
         {
           text: "اسم الصلاحيه (انجيزي)",
-          value: "permissionEn",
+          value: "en.name",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
-      items: [
-        {
-          permissionAr: "جمهورية مصر العربيه",
-          permissionEn: "Egypt",
-        },
-        {
-          permissionAr: "جمهورية مصر العربيه",
-          permissionEn: "Egypt",
-        },
-      ],
+      items: [],
     };
   },
   methods: {
@@ -109,6 +111,26 @@ export default {
       console.log(item);
       this.$router.push("/permissions/edit/1");
     },
+    getitesmPerPage() {
+      this.isloading = true;
+      server
+        .get(`/dashboard/role?page=${this.page}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.items = res.data.data;
+          this.total = res.data.meta.total;
+          this.page = res.data.meta.current_page;
+          this.pageCount = res.data.meta.last_page;
+          this.isloading = false;
+        });
+    },
+  },
+  mounted() {
+    this.getitesmPerPage();
   },
 };
 </script>

@@ -2,12 +2,14 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
       :headers="headers"
       :items="items"
+      :items-per-page="total"
+      :loading="isloading"
       hide-default-footer
       class="elevation-1"
     >
@@ -53,15 +55,16 @@
 
 <script>
 import server from "@/apis/server";
-// import DeleteModel from "@/components/ui/models/DeleteModel.vue";
 export default {
-  // components: { DeleteModel },
   data() {
     return {
       dialogDelete: false,
-      page: "",
-      pageCount: "",
+      page: 0,
+      pageCount: 0,
       selecetedItemId: "",
+      total: 0,
+      delId: "",
+      isloading: false,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -110,21 +113,47 @@ export default {
       console.log("smth");
     },
     deleteItemConfirm() {
-      console.log("smth");
+      server
+        .delete(`/dashboard/subCategory/${this.delId}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.$iziToast.success({
+            message: res.data.message,
+          });
+          this.getitesmPerPage();
+        })
+        .catch((res) => {
+          this.$iziToast.error({
+            message: res.response.message,
+          });
+        });
+      this.dialogDelete = false;
     },
-    deleteItem() {
+    deleteItem(id) {
+      this.delId = id;
       this.dialogDelete = "true";
     },
-    editItem(item) {
-      console.log(item);
-      this.$router.push("/supFilters/edit/1");
+    editItem(id) {
+      this.$router.push(`/supFilters/edit/${id}`);
     },
     getitesmPerPage(currPage) {
-      server.get(`/dashboard/subCategory?page=${currPage}`).then((res) => {
-        this.items = res.data.data;
-        this.page = res.data.meta.current_page;
-        this.pageCount = res.data.meta.last_page;
-      });
+      this.isloading = true;
+      server
+        .get(`/dashboard/subCategory?page=${currPage}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.items = res.data.data;
+          this.total = res.data.meta.total;
+          this.page = res.data.meta.current_page;
+          this.pageCount = res.data.meta.last_page;
+          this.isloading = false;
+        });
     },
   },
   mounted() {

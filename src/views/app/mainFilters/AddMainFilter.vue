@@ -4,13 +4,10 @@
     <v-form class="curd_form" @submit.prevent="submitForm">
       <h3 class="form_title">إضافه جديد</h3>
       <div class="img-edit">
-        <img
-          :src="imgSrc"
-          id="account-detail-img-output"
-          alt=""
-          :class="show ? 'show' : ''"
-        />
-        <label for="file" class="img-input_label_text">Main Image</label>
+        <img :src="imgSrc" id="account-detail-img-output" alt="" v-if="img" />
+        <label for="file" class="img-input_label_text" v-if="!img"
+          >Main Image</label
+        >
         <label for="file" class="img-input"><i class="fa fa-edit"></i></label>
         <input
           type="file"
@@ -66,7 +63,6 @@ export default {
   methods: {
     loadFile(event) {
       this.img = event.target.files[0];
-      this.show = true;
       this.imgSrc = URL.createObjectURL(event.target.files[0]);
     },
     submitForm() {
@@ -110,7 +106,6 @@ export default {
           this.nameAr = "";
           this.nameEn = "";
           this.imgSrc = "";
-          this.show = false;
         })
         .catch((res) => {
           console.log(res);

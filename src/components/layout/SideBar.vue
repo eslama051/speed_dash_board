@@ -1,13 +1,13 @@
 <template>
   <v-navigation-drawer
-    v-model="drawerOpen"
-    @input="onInput"
+    v-model="isNavDrawer"
+    @click="closeNav"
     right
     class="nav_drawer"
     style="height: 100vh"
     app
   >
-    <button class="nav_drawer_close_btn" @click="closeNavDrawer">
+    <button class="nav_drawer_close_btn" @click="closeNav">
       <i class="fa fa-xmark"></i>
     </button>
     <v-list-item class="mb-2 d-none d-lg-block">
@@ -63,16 +63,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: {},
   data() {
     return {
-      drawerOpen: this.open,
       items: [
         {
           action: "",
@@ -156,20 +151,20 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters({
+      isNavDrawer: "isNavDrawer",
+    }),
+  },
+
   watch: {
-    open(newVal) {
-      this.drawerOpen = newVal;
-    },
+    // drawerOpen() {
+    //   // this.$store.dispatch("toggleNavDrawer");
+    // },
   },
   methods: {
-    onInput(isOpen) {
-      this.$emit("drawerOpened", isOpen);
-    },
-    closeNavDrawer() {
-      this.drawerOpen = false;
-    },
-    routetohome() {
-      this.$router.push("/");
+    closeNav() {
+      this.$store.dispatch("toggleNavDrawer");
     },
   },
 };

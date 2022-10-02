@@ -2,12 +2,13 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
       :headers="headers"
       :items="items"
+      :loading="isloading"
       hide-default-footer
       class="elevation-1"
     >
@@ -38,23 +39,27 @@
           </div>
         </v-dialog>
       </template>
-      <template v-slot:[`item.image`]="{ item }">
-        <div class="img-container" @click="opendialogimg(item.image)">
-          <img :src="item.image" alt="" />
+      <template v-slot:[`item.main_image`]="{ item }">
+        <div class="img-container" @click="opendialogimg(item.main_image)">
+          <img :src="item.main_image" alt="" />
         </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <router-link to="/clients/show/1">
+        <router-link :to="`/ades/show/${item.id}`">
           <v-icon small> mdi-eye </v-icon>
         </router-link>
-        <v-icon small @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small @click="editItem(item.id)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+    <div class="text-center pt-2">
+      <v-pagination dir="ltr" v-model="page" :length="pageCount"></v-pagination>
+    </div>
   </section>
 </template>
 
 <script>
+import server from "@/apis/server";
 // import DeleteModel from "@/components/ui/models/DeleteModel.vue";
 export default {
   // components: { DeleteModel },
@@ -63,6 +68,11 @@ export default {
       dialogDelete: false,
       dialogImg: false,
       dialogImgSrc: "",
+      deleteId: "",
+      isLoading: false,
+      total: 0,
+      page: 0,
+      pageCount: 0,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -84,7 +94,7 @@ export default {
       headers: [
         {
           text: "الصوره",
-          value: "image",
+          value: "main_image",
           //   sortable: false,
         },
         {
@@ -98,53 +108,78 @@ export default {
         },
         {
           text: "الفئه",
-          value: "category",
+          value: "category.ar.name",
         },
         {
           text: "الكميه",
-          value: "quantity",
+          value: "qty",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
-      items: [
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          name: "دراجه هوائيه",
-          rate: 2,
-          category: "سيارات",
-          quantity: 4,
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          name: "دراجه هوائيه",
-          rate: 2,
-          category: "سيارات",
-          quantity: 4,
-        },
-      ],
+      items: [],
     };
+  },
+  watch: {
+    page() {
+      this.getitesmPerPage();
+    },
   },
   methods: {
     closeDelete() {
       console.log("smth");
     },
     deleteItemConfirm() {
-      console.log("smth");
+      server
+        .delete(`/dashboard/product/${this.deleteId}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.$iziToast.success({
+            message: res.data.message,
+          });
+          this.getitesmPerPage(this.page);
+        })
+        .catch((res) => {
+          this.$iziToast.error({
+            message: res.response.message,
+          });
+        });
+      this.dialogDelete = false;
     },
-    deleteItem() {
+    deleteItem(id) {
+      this.deleteId = id;
       this.dialogDelete = "true";
     },
-    editItem(item) {
-      console.log(item);
-      this.$router.push("/ades/edit/1");
+    editItem(id) {
+      this.$router.push(`/ades/edit/${id}`);
     },
     opendialogimg(src) {
       this.dialogImg = true;
       this.dialogImgSrc = src;
       console.log(src);
     },
+    getitesmPerPage() {
+      this.isloading = true;
+      server
+        .get(`/dashboard/product?page=${this.page}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.items = res.data.data;
+          this.total = res.data.meta.total;
+          this.page = res.data.meta.current_page;
+          this.pageCount = res.data.meta.last_page;
+          this.isloading = false;
+        });
+    },
+  },
+  mounted() {
+    this.getitesmPerPage();
   },
 };
 </script>

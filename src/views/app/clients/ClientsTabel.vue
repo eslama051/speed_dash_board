@@ -2,12 +2,13 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
       :headers="headers"
       :items="items"
+      :items-per-page="total"
       hide-default-footer
       class="elevation-1"
     >
@@ -44,28 +45,30 @@
         </div>
       </template>
 
-      <template v-slot:[`item.active`]="{ item }">
-        <v-chip :color="getColor(item.active)" dark>
-          {{ item.active }}
+      <template v-slot:[`item.is_active`]="{ item }">
+        <v-chip :color="getColor(item.is_active)" dark>
+          {{ item.is_active ? "مفعل" : "غير مفعل" }}
         </v-chip>
       </template>
-      <template v-slot:[`item.blocked`]="{ item }">
-        <v-chip :color="getColorBlocked(item.blocked)" dark>
-          {{ item.blocked }}
+      <template v-slot:[`item.is_ban`]="{ item }">
+        <v-chip :color="getColorBlocked(item.is_ban)" dark>
+          {{ item.is_ban ? "محظور" : "غيرمحظور" }}
         </v-chip>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <router-link to="/clients/show/1">
-          <v-icon small> mdi-eye </v-icon>
-        </router-link>
-        <v-icon small @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small @click="showItem(item.id)"> mdi-eye </v-icon>
+        <v-icon small @click="editItem(item.id)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+    <div class="text-center pt-2">
+      <v-pagination dir="ltr" v-model="page" :length="pageCount"></v-pagination>
+    </div>
   </section>
 </template>
 
 <script>
+import server from "@/apis/server";
 // import DeleteModel from "@/components/ui/models/DeleteModel.vue";
 export default {
   // components: { DeleteModel },
@@ -74,6 +77,10 @@ export default {
       dialogDelete: false,
       dialogimg: false,
       dialogImgSrc: "",
+      page: 0,
+      pageCount: 0,
+      total: 0,
+      deleteId: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -100,7 +107,7 @@ export default {
         },
         {
           text: "الاسم",
-          value: "name",
+          value: "username",
           //   sortable: false,
         },
         {
@@ -109,54 +116,62 @@ export default {
         },
         {
           text: "مفعل؟",
-          value: "active",
+          value: "is_active",
         },
         {
           text: "محظور؟",
-          value: "blocked",
+          value: "is_ban",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
-      items: [
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          name: "eslam",
-          phone: "010134315",
-          active: "مفعل",
-          blocked: "غير محظور",
-        },
-        {
-          image:
-            " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-          name: "eslam",
-          phone: "010134315",
-          active: "غير مفعل",
-          blocked: "محظور",
-        },
-      ],
+      items: [],
     };
+  },
+  watch: {
+    page() {
+      this.getitesmPerPage(this.page);
+    },
   },
   methods: {
     closeDelete() {
       console.log("smth");
     },
     deleteItemConfirm() {
-      console.log("smth");
+      server
+        .delete(`/dashboard/client/${this.deleteId}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.$iziToast.success({
+            message: res.data.message,
+          });
+          this.getitesmPerPage(this.page);
+        })
+        .catch((res) => {
+          this.$iziToast.error({
+            message: res.response.message,
+          });
+        });
+      this.dialogDelete = false;
     },
-    deleteItem() {
+    deleteItem(id) {
+      this.deleteId = id;
       this.dialogDelete = "true";
     },
-    editItem(item) {
-      console.log(item);
-      this.$router.push("/clients/edit/1");
+    editItem(id) {
+      this.$router.push(`/clients/edit/${id}`);
+    },
+    showItem(id) {
+      this.$router.push(`/clients/show/${id}`);
     },
     getColor(active) {
-      if (active == "مفعل") return "green";
+      if (active) return "green";
       else return "red";
     },
     getColorBlocked(blocked) {
-      if (blocked == "غير محظور") return "green";
+      if (!blocked) return "green";
       else return "red";
     },
     opendialogimg(src) {
@@ -164,6 +179,23 @@ export default {
       this.dialogImgSrc = src;
       console.log(src);
     },
+    getitesmPerPage(currPage) {
+      server
+        .get(`/dashboard/client?page=${currPage}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.items = res.data.data;
+          this.total = res.data.meta.total;
+          this.page = res.data.meta.current_page;
+          this.pageCount = res.data.meta.last_page;
+        });
+    },
+  },
+  mounted() {
+    this.getitesmPerPage(1);
   },
 };
 </script>

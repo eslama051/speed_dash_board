@@ -2,7 +2,7 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
@@ -66,6 +66,7 @@ export default {
       src: "",
       id: "",
       isloading: false,
+      total: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -101,68 +102,7 @@ export default {
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
-      items: [
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-        // {
-        //   image:
-        //     " https://speed4ever.elsaed.aait-d.com/storage/images/category/FkyVbwrKjpHjv54KTweS4ZiCKz9Z2dCnRf0MyOPS.png",
-        //   nameAr: "إكسسوارات الهواتف",
-        //   nameEn: "Phone Accessories",
-        // },
-      ],
+      items: [],
     };
   },
   methods: {
@@ -214,6 +154,7 @@ export default {
         .then((res) => {
           // console.log(res.data.data);
           this.items = res.data.data;
+          this.total = res.data.meta.total;
           this.isloading = false;
         });
     },

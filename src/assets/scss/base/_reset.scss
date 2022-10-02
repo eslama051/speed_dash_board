@@ -37,7 +37,7 @@ ul {
   transition: opacity 0.5s ease;
 }
 
-.fide-enter-from,
+.fide-enter,
 .fide-leave-to {
   opacity: 0;
 }
@@ -74,4 +74,8 @@ ul {
 .fadeInUp-enter-to,
 .fadeInUp-leave {
   opacity: 1;
+}
+
+.bg-white {
+  background-color: white;
 }

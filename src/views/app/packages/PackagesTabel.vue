@@ -2,12 +2,13 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
       :headers="headers"
       :items="items"
+      :loading="isLoading"
       hide-default-footer
       class="elevation-1"
     >
@@ -39,20 +40,31 @@
         </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item.id)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+    <div class="text-center pt-2">
+      <v-pagination dir="ltr" v-model="page" :length="pageCount"></v-pagination>
+    </div>
   </section>
 </template>
 
 <script>
+import server from "@/apis/server";
 // import DeleteModel from "@/components/ui/models/DeleteModel.vue";
 export default {
   // components: { DeleteModel },
   data() {
     return {
       dialogDelete: false,
+      page: 1,
+      pageCount: 1,
+      total: "",
+      deleteId: "",
+      isLoading: false,
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -74,54 +86,77 @@ export default {
       headers: [
         {
           text: "عنوان الباقه (عريي)",
-          value: "packageAr",
+          value: "ar.name",
           //   sortable: false,
         },
         {
           text: "عنوان الباقه (انجيزي)",
-          value: "packageEn",
+          value: "en.name",
         },
         {
           text: "عدد الاعلانات",
-          value: "packagesMount",
+          value: "number_of_products",
           //   sortable: false,
         },
         {
           text: " السعر",
-          value: "price",
+          value: "package_price",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
-      items: [
-        {
-          packageAr: "الباقة البرونزية",
-          packageEn: "Pronze",
-          packagesMount: "200",
-          price: "499",
-        },
-        {
-          packageAr: "الباقة البرونزية",
-          packageEn: "Pronze",
-          packagesMount: "200",
-          price: "499",
-        },
-      ],
+      items: [],
     };
   },
+  watch: {
+    page() {
+      this.getitesmPerPage(this.page);
+    },
+  },
   methods: {
-    closeDelete() {
-      console.log("smth");
-    },
+    closeDelete() {},
     deleteItemConfirm() {
-      console.log("smth");
+      server
+        .delete(`/dashboard/package/${this.deleteId}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.$iziToast.success({
+            message: res.data.message,
+          });
+          this.getitesmPerPage(this.page);
+        })
+        .catch((res) => {
+          this.$iziToast.error({
+            message: res.response.message,
+          });
+        });
+      this.dialogDelete = false;
     },
-    deleteItem() {
+    deleteItem(id) {
+      this.deleteId = id;
       this.dialogDelete = "true";
     },
-    editItem(item) {
-      console.log(item);
-      this.$router.push("/packages/edit/1");
+    editItem(id) {
+      this.$router.push(`/packages/edit/${id}`);
     },
+    getitesmPerPage() {
+      this.isLoading = true;
+      server
+        .get(`/dashboard/package`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.items = res.data.data;
+          this.isLoading = false;
+        });
+    },
+  },
+  mounted() {
+    this.getitesmPerPage();
   },
 };
 </script>

@@ -9,11 +9,15 @@
             alt=""
           />
         </div>
-        <h4 class="show_client_header_user_name">eslama@gmail.com</h4>
+        <h4 class="show_client_header_user_name">{{ email }}</h4>
       </div>
     </div>
     <div class="show_client_body">
-      <div class="show_client_card">
+      <div
+        class="show_client_card"
+        v-if="!clientDetails"
+        @click="showClientDetails"
+      >
         <div class="show_client_card_pseudo">
           <div class="show_client_card_content">
             <div class="user_icon">
@@ -23,14 +27,45 @@
           </div>
         </div>
       </div>
+
+      <div v-else class="clinet_details">
+        <div>
+          <h4 class="title mb-2">الاسم</h4>
+          <h4>{{ name }}</h4>
+        </div>
+        <div>
+          <h4 class="title mb-2">الهاتف</h4>
+          <h4>{{ phone }}</h4>
+        </div>
+        <div>
+          <h4 class="title mb-2">البريد الإلكتروني</h4>
+          <h4>{{ email }}</h4>
+        </div>
+        <div>
+          <h4 class="title mb-2">مفعل</h4>
+          <h4>{{ is_active ? "مفعل" : "غير مفعل" }}</h4>
+        </div>
+        <div>
+          <h4 class="title mb-2">الحظر</h4>
+          <h4>{{ is_ban ? "محظور" : "غير محظور" }}</h4>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import "particles.js";
+import server from "@/apis/server";
 export default {
-  // ...
+  data() {
+    return {
+      email: "",
+      clientDetails: false,
+      name: "",
+    };
+  },
+  props: ["id"],
   methods: {
     initParticles() {
       window.particlesJS("particles-js", {
@@ -95,17 +130,53 @@ export default {
         retina_detect: true,
       });
     },
+    getClientData() {
+      server
+        .get(`/dashboard/client/${this.id}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.email = res.data.data.email;
+          this.name = res.data.data.username;
+          this.phone = res.data.data.phone;
+          this.is_active = res.data.data.is_active;
+          this.is_ban = res.data.data.is_ban;
+        });
+    },
+    showClientDetails() {
+      this.clientDetails = true;
+    },
   },
   mounted() {
     this.initParticles();
+    this.getClientData();
   },
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 #particles-js {
   position: absolute;
   width: 100%;
   height: 100%;
   /* background: #00356b; */
+}
+.clinet_details {
+  display: grid;
+  gap: 1rem;
+  div {
+    background: white;
+    padding: 1rem;
+    border-radius: 1rem;
+    .title {
+      color: var(--main_theme_clr);
+      font-family: inherit !important;
+      font-size: 1rem !important;
+    }
+  }
+  @media screen and (min-width: 700px) {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 </style>

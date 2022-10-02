@@ -2,12 +2,13 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
       :headers="headers"
       :items="items"
+      :items-per-page="total"
       hide-default-footer
       class="elevation-1"
     >
@@ -39,20 +40,30 @@
         </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item.id)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+    <div class="text-center pt-2">
+      <v-pagination dir="ltr" v-model="page" :length="pageCount"></v-pagination>
+    </div>
   </section>
 </template>
 
 <script>
+import server from "@/apis/server";
 // import DeleteModel from "@/components/ui/models/DeleteModel.vue";
 export default {
   // components: { DeleteModel },
   data() {
     return {
       dialogDelete: false,
+      page: 1,
+      pageCount: 1,
+      total: 0,
+      deleteId: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -74,21 +85,21 @@ export default {
       headers: [
         {
           text: "السؤال (عريي)",
-          value: "questionAr",
+          value: "ar.name",
           //   sortable: false,
         },
         {
           text: "السؤال (انجيزي)",
-          value: "questionEn",
+          value: "en.name",
         },
         {
           text: "الاجابه (عريي)",
-          value: "answerAr",
+          value: "ar.desc",
           //   sortable: false,
         },
         {
           text: "الاجابه (انجيزي)",
-          value: "answerEn",
+          value: "en.desc",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
@@ -102,20 +113,59 @@ export default {
       ],
     };
   },
+  watch: {
+    page() {
+      this.getitesmPerPage(this.page);
+    },
+  },
   methods: {
     closeDelete() {
       console.log("smth");
     },
     deleteItemConfirm() {
-      console.log("smth");
+      server
+        .delete(`/dashboard/faq/${this.deleteId}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.$iziToast.success({
+            message: res.data.message,
+          });
+          this.getitesmPerPage();
+        })
+        .catch((res) => {
+          this.$iziToast.error({
+            message: res.response.message,
+          });
+        });
+      this.dialogDelete = false;
     },
-    deleteItem() {
+    deleteItem(id) {
+      this.deleteId = id;
       this.dialogDelete = "true";
     },
-    editItem(item) {
-      console.log(item);
-      this.$router.push("/commonQuestions/edit/1");
+    editItem(id) {
+      this.$router.push(`/commonQuestions/edit/${id}`);
     },
+    getitesmPerPage() {
+      server
+        .get(`/dashboard/faq?page=${this.page}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.items = res.data.data;
+          this.total = res.data.meta.total;
+          this.page = res.data.meta.current_page;
+          this.pageCount = res.data.meta.last_page;
+        });
+    },
+  },
+  mounted() {
+    this.getitesmPerPage();
   },
 };
 </script>

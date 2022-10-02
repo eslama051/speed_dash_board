@@ -2,12 +2,14 @@
   <section class="home_filter_all">
     <v-breadcrumbs :items="breadItems" divider=">>" />
     <div class="section_info">
-      <h2>4</h2>
+      <h2>{{ total }}</h2>
       <div><i class="fa fa-chart-bar"></i></div>
     </div>
     <v-data-table
       :headers="headers"
       :items="items"
+      :items-per-page="total"
+      :loading="isloading"
       hide-default-footer
       class="elevation-1"
     >
@@ -39,20 +41,26 @@
         </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item.id)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
   </section>
 </template>
 
 <script>
+import server from "@/apis/server";
 // import DeleteModel from "@/components/ui/models/DeleteModel.vue";
 export default {
   // components: { DeleteModel },
   data() {
     return {
       dialogDelete: false,
+      isloading: false,
+      total: 0,
+      deleteId: "",
       breadItems: [
         {
           text: "الصفحه الرئيسيه",
@@ -74,25 +82,16 @@ export default {
       headers: [
         {
           text: "اسم الدوله (عريي)",
-          value: "countryAr",
+          value: "ar.name",
           //   sortable: false,
         },
         {
           text: "اسم الدوله (انجيزي)",
-          value: "countryEn",
+          value: "en.name",
         },
         { text: "التحكم", value: "actions", sortable: false },
       ],
-      items: [
-        {
-          countryAr: "جمهورية مصر العربيه",
-          countryEn: "Egypt",
-        },
-        {
-          countryAr: "جمهورية مصر العربيه",
-          countryEn: "Egypt",
-        },
-      ],
+      items: [],
     };
   },
   methods: {
@@ -100,15 +99,50 @@ export default {
       console.log("smth");
     },
     deleteItemConfirm() {
-      console.log("smth");
+      server
+        .delete(`/dashboard/country/${this.deleteId}`, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          this.$iziToast.success({
+            message: res.data.message,
+          });
+          this.getCountries();
+        })
+        .catch((res) => {
+          this.$iziToast.error({
+            message: res.response.message,
+          });
+        });
+      this.dialogDelete = false;
     },
-    deleteItem() {
+    deleteItem(id) {
+      this.deleteId = id;
       this.dialogDelete = "true";
     },
-    editItem(item) {
-      console.log(item);
-      this.$router.push("/countries/edit/1");
+    editItem(id) {
+      this.$router.push(`/countries/edit/${id}`);
     },
+    getCountries() {
+      this.isloading = true;
+      server
+        .get("/dashboard/country", {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+          },
+        })
+        .then((res) => {
+          // console.log(res.data.data);
+          this.items = res.data.data;
+          this.total = res.data.meta.total;
+          this.isloading = false;
+        });
+    },
+  },
+  mounted() {
+    this.getCountries();
   },
 };
 </script>

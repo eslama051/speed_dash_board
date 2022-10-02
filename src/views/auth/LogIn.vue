@@ -61,15 +61,22 @@ export default {
       const formData = new FormData();
       formData.append("username", this.email);
       formData.append("password", this.password);
-      server.post("/dashboard/login", formData).then((res) => {
-        this.isLoading = false;
-        this.$iziToast.success({
-          message: "تم تسجيل الدخول بنجاح",
+      server
+        .post("/dashboard/login", formData)
+        .then((res) => {
+          this.isLoading = false;
+          this.$iziToast.success({
+            message: "تم تسجيل الدخول بنجاح",
+          });
+          this.$store.dispatch("auth/getUserAuthData", res.data.data);
+        })
+        .catch((res) => {
+          this.isLoading = false;
+          console.log(res);
+          this.$iziToast.error({
+            message: res.response.data.message,
+          });
         });
-        this.$store.dispatch("auth/getUserAuthData", res.data.data);
-        console.log(res.data.data);
-      });
-      // this.$router.push("/");
     },
   },
 };

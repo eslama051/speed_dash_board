@@ -48,11 +48,12 @@ import AddPermission from "../views/app/permissions/AddPermission.vue";
 import EditPermission from "../views/app/permissions/EditPermission.vue";
 //end :: Permissions
 
-//start :: Permissions
+//start :: products
 import AdesTabel from "../views/app/ades/AdesTabel.vue";
+import showAD from "../views/app/ades/ShowAD.vue";
 import AddAd from "../views/app/ades/AddAd.vue";
 import EditAd from "../views/app/ades/EditAd.vue";
-//end :: Permissions
+//end :: products
 
 //start :: Permissions
 import AdvsTabel from "../views/app/advs/AdvsTabel.vue";
@@ -114,6 +115,9 @@ import ContactUsEdit from "../views/app/settings/ContactUsEdit.vue";
 // login
 import LogIn from "../views/auth/LogIn.vue";
 
+//not found
+import NotFound from "../views/NotFound.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -136,7 +140,7 @@ const routes = [
       { path: "sliders/edit/:id", component: EditMainSlider, props: true },
       // clients
       { path: "clients", component: ClientsTabel },
-      { path: "clients/show/:id", component: ShowClient },
+      { path: "clients/show/:id", component: ShowClient, props: true },
       { path: "clients/add", component: AddClient },
       { path: "clients/edit/:id", component: EditClient, props: true },
       // countries
@@ -153,6 +157,7 @@ const routes = [
       { path: "permissions/edit/:id", component: EditPermission, props: true },
       // ades
       { path: "ades", component: AdesTabel },
+      { path: "ades/show/:id", component: showAD, props: true },
       { path: "ades/add", component: AddAd },
       { path: "ades/edit/:id", component: EditAd, props: true },
       // advertisements
@@ -177,7 +182,7 @@ const routes = [
       { path: "shipping/edit/:id", component: EditShipping, props: true },
       // admins
       { path: "admins", component: AdminsTabel },
-      { path: "admins/show/:id", component: ShowAdmin },
+      { path: "admins/show/:id", component: ShowAdmin, props: true },
       { path: "admins/add", component: AddAdmin },
       { path: "admins/edit/:id", component: EditAdmin, props: true },
       // commonQuestions
@@ -210,6 +215,7 @@ const routes = [
     ],
   },
   { path: "/login", component: LogIn },
+  { path: "/:notFound(.*)", component: NotFound },
 ];
 const router = new VueRouter({
   mode: "history",
